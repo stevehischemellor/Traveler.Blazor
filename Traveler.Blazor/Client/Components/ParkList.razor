@@ -1,0 +1,47 @@
+﻿@using Traveler.Blazor.Client.Services;
+@using Traveler.Blazor.Client.Models;
+@inject IParksService parksService;
+
+<h3>Park List</h3>
+
+<div class="alert alert-secondary mt-4">
+    <span class="oi oi-pencil me-2" aria-hidden="true"></span>
+
+    @if (parks == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Park</th>
+                <th>Name</th>
+                <th>Latitude</th>
+                <th>Longitude</th>                
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var park in parks)
+        {
+            <tr>
+                <td>@park.ParkCode</td>
+                <td>@park.FullName</td>
+                <td>@park.Latitude</td>
+                <td>@park.Longitude</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    }
+</div>
+
+@code {
+    private List<ParkModel>? parks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        parks = await parksService.GetParksAsync();
+    }
+}
